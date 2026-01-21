@@ -1,15 +1,15 @@
 # CMake toolchain file for x86 (32-bit) builds
 # Cross-platform: works on Windows, Linux, and macOS
 
-# Force 32-bit pointer size BEFORE compiler detection
-set(CMAKE_SIZEOF_VOID_P 4 CACHE INTERNAL "Pointer size in bytes" FORCE)
-
 # Platform-specific configuration
 if(WIN32)
-  # On Windows with MSVC, rely on vcvarsall.bat environment setup
+  # On Windows with MSVC, the architecture is set by CMakePresets.json
+  # Don't interfere with compiler detection - let CMake detect MSVC naturally
   # Visual Studio and Ninja will use the environment provided by the developer command prompt
   set(CMAKE_SYSTEM_NAME Windows)
   set(CMAKE_SYSTEM_PROCESSOR X86)
+  # CMAKE_SIZEOF_VOID_P will be set automatically by CMake based on the architecture
+  # specified in the preset (architecture: { value: "x86", strategy: "external" })
   message(STATUS "x86 Toolchain: Configured for 32-bit Windows build")
 
 elseif(UNIX AND NOT APPLE)

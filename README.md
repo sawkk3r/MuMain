@@ -173,7 +173,31 @@ Rider doesn't have full CMake support for C++ projects, so you need to generate 
 
 Using CMakePresets.json with Ninja (same as IDEs, much faster than MSBuild):
 
+**Prerequisites:**
+- Ensure you're in the project root directory (`C:\GitHub\MuMain` or wherever you cloned the repository)
+- CMake and Ninja must be available in your PATH, or you need to initialize the Visual Studio environment
+
+**Setup (if CMake/Ninja are not in PATH):**
+
+If `cmake` or `ninja` commands are not recognized, you have two options:
+
+1. **Use Visual Studio Developer Command Prompt** (recommended):
+   - Open "Developer Command Prompt for VS 2022" or "Developer PowerShell for VS 2022"
+   - Navigate to the project root: `cd C:\GitHub\MuMain`
+
+2. **Manually initialize the environment** before running CMake commands:
+   ```powershell
+   # Initialize Visual Studio environment for x86 builds
+   & "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat"
+   # (Adjust the path if you have a different VS edition: Community, Professional, Enterprise, or Insiders)
+   ```
+
+**Build commands:**
+
 ```powershell
+# Make sure you're in the project root directory
+cd C:\GitHub\MuMain
+
 # Configure x86 build (first time only, or when CMakeLists.txt changes)
 cmake --preset windows-x86
 
@@ -187,6 +211,12 @@ cmake --build --preset windows-x86-release
 cmake --preset windows-x64
 cmake --build --preset windows-x64-debug
 ```
+
+**Alternative: Combined command** (initializes environment and builds in one step):
+```powershell
+cmd /c '"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat" && cmake --build --preset windows-x86-debug'
+```
+*(Adjust the vcvars32.bat path to match your Visual Studio installation)*
 
 **Note:** Ninja Multi-Config allows switching between Debug and Release without reconfiguring. Assets are automatically copied to the build output directory during compilation.
 
